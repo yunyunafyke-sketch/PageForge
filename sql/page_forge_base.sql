@@ -122,6 +122,15 @@ INSERT INTO `sys_function`
     (`function_code`, `function_name`, `description`, `creator`)
 VALUES
     ('system:profile:view', '个人信息查看', '查看当前用户个人信息', 'system'),
+    ('system:user:list', '用户权限查询', '查看用户及其角色', 'system'),
+    ('system:user:assign-role', '用户角色分配', '给用户分配一个或多个角色', 'system'),
+    ('system:role:list', '角色查询', '查看角色及其功能', 'system'),
+    ('system:role:create', '角色新增', '新增系统角色', 'system'),
+    ('system:role:update', '角色修改', '修改系统角色信息', 'system'),
+    ('system:role:assign-function', '角色功能分配', '给角色分配功能', 'system'),
+    ('system:function:list', '功能查询', '查看系统功能', 'system'),
+    ('system:function:create', '功能新增', '新增菜单或按钮功能', 'system'),
+    ('system:function:update', '功能修改', '修改菜单或按钮功能', 'system'),
     ('staff:outsourced:list', '外包人员查询', '查看外包人员列表和详情', 'system'),
     ('staff:outsourced:create', '外包人员新增', '新增外包人员', 'system'),
     ('staff:outsourced:update', '外包人员修改', '修改外包人员信息和状态', 'system'),

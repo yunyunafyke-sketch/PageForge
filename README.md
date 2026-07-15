@@ -59,3 +59,19 @@ http://localhost:8080/doc.html
 - `POST /api/admin/oss/delete`：管理员删除文件，使用 JSON 传入 `objectKey`。
 
 OSS 默认使用杭州地域和 `personal-afyke` Bucket，可通过 `ALIYUN_OSS_ENDPOINT`、`ALIYUN_OSS_BUCKET`、`ALIYUN_OSS_PUBLIC_DOMAIN` 覆盖。AccessKey 不应写入代码或配置文件，请使用 RAM 用户的最小权限密钥并通过环境变量注入。
+
+## 权限管理接口
+
+权限管理保持为简单的“用户 → 角色 → 功能”关系，以下接口仅允许管理员访问：
+
+- `POST /api/admin/system/user/page`：分页查询用户和用户角色。
+- `POST /api/admin/system/user/assign-roles`：使用完整角色 ID 列表覆盖用户角色。
+- `POST /api/admin/system/role/page`：分页查询角色和角色功能。
+- `POST /api/admin/system/role/create`：新增角色。
+- `POST /api/admin/system/role/update`：修改角色。
+- `POST /api/admin/system/role/assign-functions`：使用完整功能 ID 列表覆盖角色功能。
+- `POST /api/admin/system/function/page`：分页查询功能。
+- `POST /api/admin/system/function/create`：新增功能。
+- `POST /api/admin/system/function/update`：修改功能。
+
+新增业务功能后，先通过功能新增接口登记 `模块:资源:操作` 格式的功能编码，再通过角色功能分配接口授权。用户角色或功能发生变化后，用户需要重新登录，以获取最新的 JWT 角色和前端功能列表。

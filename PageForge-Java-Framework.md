@@ -698,6 +698,15 @@ public class OutsourcedStaffController {
 }
 ```
 
+### 13.4 权限管理入口
+
+管理员通过 `/api/admin/system/**` 维护权限，不需要直接修改关联表。系统提供用户、角色和功能分页查询，支持新增或修改角色与功能，并通过以下两个接口覆盖关联关系：
+
+- `POST /api/admin/system/user/assign-roles`：给用户分配多个角色。
+- `POST /api/admin/system/role/assign-functions`：给角色分配多个功能。
+
+关联接口接收完整 ID 列表，空列表表示清空关联。权限变化后用户需要重新登录，以获取最新的 JWT 角色和前端功能列表。
+
 ## 十四、操作日志规范
 
 建议通过注解记录操作日志：
