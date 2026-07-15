@@ -19,6 +19,7 @@ public interface AliyunOssService {
      * 根据文件标识删除 OSS 对象。
      *
      * @param objectKey OSS 文件标识
+     * @return 删除请求是否成功执行
      */
-    void delete(String objectKey);
+    boolean delete(String objectKey);
 }

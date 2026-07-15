@@ -18,11 +18,11 @@ public interface OutsourcedStaffService {
 
     Long create(OutsourcedStaffCreateRequest request);
 
-    void update(OutsourcedStaffUpdateRequest request);
+    boolean update(OutsourcedStaffUpdateRequest request);
 
-    void delete(Long id);
+    boolean delete(Long id);
 
-    void batchDelete(List<Long> ids);
+    boolean batchDelete(List<Long> ids);
 
-    void changeStatus(OutsourcedStaffStatusRequest request);
+    boolean changeStatus(OutsourcedStaffStatusRequest request);
 }

@@ -339,11 +339,6 @@ public class ResultModel<T> {
         return result;
     }
 
-    /** 无具体业务数据时返回 true，明确表示操作成功。 */
-    public static ResultModel<Boolean> success() {
-        return success(Boolean.TRUE);
-    }
-
     public static <T> ResultModel<T> failure(
             Integer status, String errorCode, String errorMessage) {
         ResultModel<T> result = new ResultModel<>();
@@ -355,6 +350,8 @@ public class ResultModel<T> {
     }
 }
 ```
+
+更新、删除、状态修改和权限分配接口统一返回实际的 `Boolean` 业务结果，不使用 `ResultModel<Void>`，也不通过无参数方法伪造成功数据。
 
 成功返回示例：
 
@@ -648,7 +645,15 @@ public class LoginController {
 }
 ```
 
-### 13.3 接口权限校验
+### 13.3 注册与密码管理
+
+- `POST /api/auth/register`：公开注册账号，系统自动关联 `USER` 普通用户角色。
+- `POST /api/auth/change-password`：登录用户提交旧密码和新密码，修改自己的密码。
+- `POST /api/admin/system/user/reset-password`：管理员按用户 ID 将密码重置为 `123456`。
+
+注册和修改密码时，数据库只保存 BCrypt 密文。修改自己的密码不接收用户 ID，而是直接从 JWT 登录信息中取得当前用户，避免修改他人密码。
+
+### 13.4 接口权限校验
 
 JWT 中只保存 `userId` 和 `roles`。每次请求由 JWT 过滤器解析 Token，并将全部角色放入 Spring Security。接口只按路径区分管理员和普通用户，不再配置每个功能对应的接口。
 
@@ -664,7 +669,10 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(
                     SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(HttpMethod.POST, "/api/auth/login")
+                .requestMatchers(HttpMethod.POST,
+                    "/api/auth/login", "/api/auth/register")
+                .permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/public/**")
                 .permitAll()
                 .requestMatchers("/api/admin/**")
                 .hasAuthority("ADMIN")
@@ -698,11 +706,12 @@ public class OutsourcedStaffController {
 }
 ```
 
-### 13.4 权限管理入口
+### 13.5 权限管理入口
 
 管理员通过 `/api/admin/system/**` 维护权限，不需要直接修改关联表。系统提供用户、角色和功能分页查询，支持新增或修改角色与功能，并通过以下两个接口覆盖关联关系：
 
 - `POST /api/admin/system/user/assign-roles`：给用户分配多个角色。
+- `POST /api/admin/system/user/reset-password`：将指定用户密码重置为 `123456`。
 - `POST /api/admin/system/role/assign-functions`：给角色分配多个功能。
 
 关联接口接收完整 ID 列表，空列表表示清空关联。权限变化后用户需要重新登录，以获取最新的 JWT 角色和前端功能列表。

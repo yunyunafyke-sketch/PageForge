@@ -43,8 +43,10 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(
                         SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        // 登录和接口文档无需携带 Token。
-                        .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                        // 登录、注册、公开查询和接口文档无需携带 Token。
+                        .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/register")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/public/**").permitAll()
                         .requestMatchers("/doc.html", "/webjars/**", "/v3/api-docs/**").permitAll()
                         // 管理员接口只允许 ADMIN，普通用户接口允许 ADMIN 和 USER。
                         .requestMatchers("/api/admin/**").hasAuthority("ADMIN")

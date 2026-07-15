@@ -53,6 +53,15 @@ java -jar boot/target/boot-1.0.0-SNAPSHOT.jar
 http://localhost:8080/doc.html
 ```
 
+## 账号接口
+
+- `POST /api/auth/login`：账号密码登录，返回 JWT、角色和功能列表。
+- `POST /api/auth/register`：公开注册普通用户，并自动关联 `USER` 角色。
+- `POST /api/auth/change-password`：登录用户校验旧密码后修改自己的密码。
+- `POST /api/admin/system/user/reset-password`：管理员将指定用户密码重置为 `123456`。
+
+除登录和注册外，账号接口都需要在请求头携带 `Authorization: Bearer <token>`。密码只以 BCrypt 密文写入数据库。
+
 ## OSS 接口
 
 - `POST /api/user/oss/upload`：登录用户上传文件，使用 `multipart/form-data`，字段名为 `file`，可选目录字段为 `directory`。
@@ -66,6 +75,7 @@ OSS 默认使用杭州地域和 `personal-afyke` Bucket，可通过 `ALIYUN_OSS_
 
 - `POST /api/admin/system/user/page`：分页查询用户和用户角色。
 - `POST /api/admin/system/user/assign-roles`：使用完整角色 ID 列表覆盖用户角色。
+- `POST /api/admin/system/user/reset-password`：将指定用户密码重置为 `123456`。
 - `POST /api/admin/system/role/page`：分页查询角色和角色功能。
 - `POST /api/admin/system/role/create`：新增角色。
 - `POST /api/admin/system/role/update`：修改角色。

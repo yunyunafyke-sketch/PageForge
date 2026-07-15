@@ -65,31 +65,31 @@ public class OutsourcedStaffServiceImpl implements OutsourcedStaffService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void update(OutsourcedStaffUpdateRequest request) {
+    public boolean update(OutsourcedStaffUpdateRequest request) {
         OutsourcedStaffEntity entity = requireEntity(request.getId());
         outsourcedStaffConverter.updateEntity(request, entity);
-        outsourcedStaffMapper.updateById(entity);
+        return outsourcedStaffMapper.updateById(entity) > 0;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void delete(Long id) {
+    public boolean delete(Long id) {
         requireEntity(id);
-        outsourcedStaffMapper.deleteById(id);
+        return outsourcedStaffMapper.deleteById(id) > 0;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void batchDelete(List<Long> ids) {
-        outsourcedStaffMapper.deleteByIds(ids);
+    public boolean batchDelete(List<Long> ids) {
+        return outsourcedStaffMapper.deleteByIds(ids) > 0;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void changeStatus(OutsourcedStaffStatusRequest request) {
+    public boolean changeStatus(OutsourcedStaffStatusRequest request) {
         OutsourcedStaffEntity entity = requireEntity(request.getId());
         entity.setStatus(request.getStatus());
-        outsourcedStaffMapper.updateById(entity);
+        return outsourcedStaffMapper.updateById(entity) > 0;
     }
 
     private OutsourcedStaffEntity requireEntity(Long id) {

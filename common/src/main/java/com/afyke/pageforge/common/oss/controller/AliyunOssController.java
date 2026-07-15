@@ -36,7 +36,6 @@ public class AliyunOssController {
     /** 管理员根据 objectKey 删除 OSS 文件。 */
     @PostMapping("/admin/oss/delete")
     public ResultModel<Boolean> delete(@Valid @RequestBody OssDeleteRequest request) {
-        aliyunOssService.delete(request.getObjectKey());
-        return ResultModel.success();
+        return ResultModel.success(aliyunOssService.delete(request.getObjectKey()));
     }
 }

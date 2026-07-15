@@ -121,13 +121,13 @@ public class PermissionManagementService {
 
     /** 修改角色基础信息，不会改变角色已经拥有的功能。 */
     @Transactional(rollbackFor = Exception.class)
-    public void updateRole(RoleUpdateRequest request) {
+    public boolean updateRole(RoleUpdateRequest request) {
         RoleEntity entity = requireRole(request.getId());
         ensureRoleCodeAvailable(request.getRoleCode(), request.getId());
         entity.setRoleCode(request.getRoleCode());
         entity.setRoleName(request.getRoleName());
         entity.setDescription(request.getDescription());
-        roleMapper.updateById(entity);
+        return roleMapper.updateById(entity) > 0;
     }
 
     /** 新增前端菜单或按钮所使用的功能编码。 */
@@ -144,13 +144,13 @@ public class PermissionManagementService {
 
     /** 修改功能基础信息，不会自动改变角色关联关系。 */
     @Transactional(rollbackFor = Exception.class)
-    public void updateFunction(FunctionUpdateRequest request) {
+    public boolean updateFunction(FunctionUpdateRequest request) {
         FunctionEntity entity = requireFunction(request.getId());
         ensureFunctionCodeAvailable(request.getFunctionCode(), request.getId());
         entity.setFunctionCode(request.getFunctionCode());
         entity.setFunctionName(request.getFunctionName());
         entity.setDescription(request.getDescription());
-        functionMapper.updateById(entity);
+        return functionMapper.updateById(entity) > 0;
     }
 
     /**
@@ -158,7 +158,7 @@ public class PermissionManagementService {
      * 先停用旧关系，再启用本次提交的关系，因此前端每次提交的是完整角色 ID 列表。
      */
     @Transactional(rollbackFor = Exception.class)
-    public void assignUserRoles(UserAssignRolesRequest request) {
+    public boolean assignUserRoles(UserAssignRolesRequest request) {
         requireUser(request.getUserId());
         List<Long> roleIds = distinctIds(request.getRoleIds());
         ensureRolesExist(roleIds);
@@ -170,6 +170,7 @@ public class PermissionManagementService {
                 .set(UserRoleEntity::getModifier, "system"));
         roleIds.forEach(roleId ->
                 userRoleMapper.enableRelation(request.getUserId(), roleId));
+        return true;
     }
 
     /**
@@ -177,7 +178,7 @@ public class PermissionManagementService {
      * 传入空列表可以清空该角色的功能权限。
      */
     @Transactional(rollbackFor = Exception.class)
-    public void assignRoleFunctions(RoleAssignFunctionsRequest request) {
+    public boolean assignRoleFunctions(RoleAssignFunctionsRequest request) {
         requireRole(request.getRoleId());
         List<Long> functionIds = distinctIds(request.getFunctionIds());
         ensureFunctionsExist(functionIds);
@@ -189,6 +190,7 @@ public class PermissionManagementService {
                 .set(RoleFunctionEntity::getModifier, "system"));
         functionIds.forEach(functionId ->
                 roleFunctionMapper.enableRelation(request.getRoleId(), functionId));
+        return true;
     }
 
     private SystemUserVO toUserVO(UserEntity entity) {

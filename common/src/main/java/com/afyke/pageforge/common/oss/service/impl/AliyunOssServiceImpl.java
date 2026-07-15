@@ -65,13 +65,14 @@ public class AliyunOssServiceImpl implements AliyunOssService {
 
     /** 删除指定 Bucket 中的文件。 */
     @Override
-    public void delete(String objectKey) {
+    public boolean delete(String objectKey) {
         // 禁止绝对路径和路径穿越形式，避免客户端传入异常对象路径。
         if (!StringUtils.hasText(objectKey) || objectKey.startsWith("/") || objectKey.contains("..")) {
             throw BusinessException.badRequest("OBJECT_KEY_ERROR", "文件标识格式错误");
         }
         try {
             ossClient.deleteObject(properties.getBucket(), objectKey);
+            return true;
         } catch (OSSException | ClientException exception) {
             throw new BusinessException(500, "OSS_DELETE_FAILED", "文件删除失败");
         }

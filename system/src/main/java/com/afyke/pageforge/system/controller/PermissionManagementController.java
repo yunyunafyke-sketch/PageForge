@@ -42,8 +42,7 @@ public class PermissionManagementController {
     @PostMapping("/user/assign-roles")
     public ResultModel<Boolean> assignUserRoles(
             @Valid @RequestBody UserAssignRolesRequest request) {
-        permissionManagementService.assignUserRoles(request);
-        return ResultModel.success();
+        return ResultModel.success(permissionManagementService.assignUserRoles(request));
     }
 
     /** 查询角色及其已经分配的功能。 */
@@ -64,16 +63,14 @@ public class PermissionManagementController {
     @PostMapping("/role/update")
     public ResultModel<Boolean> updateRole(
             @Valid @RequestBody RoleUpdateRequest request) {
-        permissionManagementService.updateRole(request);
-        return ResultModel.success();
+        return ResultModel.success(permissionManagementService.updateRole(request));
     }
 
     /** 使用完整功能 ID 列表覆盖指定角色的功能。 */
     @PostMapping("/role/assign-functions")
     public ResultModel<Boolean> assignRoleFunctions(
             @Valid @RequestBody RoleAssignFunctionsRequest request) {
-        permissionManagementService.assignRoleFunctions(request);
-        return ResultModel.success();
+        return ResultModel.success(permissionManagementService.assignRoleFunctions(request));
     }
 
     /** 查询可以分配给角色的功能。 */
@@ -94,7 +91,6 @@ public class PermissionManagementController {
     @PostMapping("/function/update")
     public ResultModel<Boolean> updateFunction(
             @Valid @RequestBody FunctionUpdateRequest request) {
-        permissionManagementService.updateFunction(request);
-        return ResultModel.success();
+        return ResultModel.success(permissionManagementService.updateFunction(request));
     }
 }
