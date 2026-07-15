@@ -45,26 +45,26 @@ public class OutsourcedStaffController {
     }
 
     @PostMapping("/update")
-    public ResultModel<Void> update(
+    public ResultModel<Boolean> update(
             @Valid @RequestBody OutsourcedStaffUpdateRequest request) {
         outsourcedStaffService.update(request);
         return ResultModel.success();
     }
 
     @PostMapping("/delete")
-    public ResultModel<Void> delete(@Valid @RequestBody IdRequest request) {
+    public ResultModel<Boolean> delete(@Valid @RequestBody IdRequest request) {
         outsourcedStaffService.delete(request.getId());
         return ResultModel.success();
     }
 
     @PostMapping("/batch-delete")
-    public ResultModel<Void> batchDelete(@Valid @RequestBody IdsRequest request) {
+    public ResultModel<Boolean> batchDelete(@Valid @RequestBody IdsRequest request) {
         outsourcedStaffService.batchDelete(request.getIds());
         return ResultModel.success();
     }
 
     @PostMapping("/change-status")
-    public ResultModel<Void> changeStatus(
+    public ResultModel<Boolean> changeStatus(
             @Valid @RequestBody OutsourcedStaffStatusRequest request) {
         outsourcedStaffService.changeStatus(request);
         return ResultModel.success();

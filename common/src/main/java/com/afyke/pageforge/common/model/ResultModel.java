@@ -33,8 +33,12 @@ public class ResultModel<T> {
         return result;
     }
 
-    public static ResultModel<Void> success() {
-        return success(null);
+    /**
+     * 创建操作成功响应。
+     * 没有具体业务数据时返回 true，让调用方能够明确判断操作已经完成。
+     */
+    public static ResultModel<Boolean> success() {
+        return success(Boolean.TRUE);
     }
 
     public static <T> ResultModel<T> failure(

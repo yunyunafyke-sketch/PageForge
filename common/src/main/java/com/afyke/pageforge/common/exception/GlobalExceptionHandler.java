@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
-    public ResultModel<Void> handleBusinessException(BusinessException exception) {
+    public ResultModel<Object> handleBusinessException(BusinessException exception) {
         return ResultModel.failure(
                 exception.getStatus(),
                 exception.getErrorCode(),
@@ -22,7 +22,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({MethodArgumentNotValidException.class, BindException.class})
-    public ResultModel<Void> handleValidationException(Exception exception) {
+    public ResultModel<Object> handleValidationException(Exception exception) {
         String message = exception instanceof MethodArgumentNotValidException validException
                 ? validException.getBindingResult().getFieldError().getDefaultMessage()
                 : ((BindException) exception).getBindingResult().getFieldError().getDefaultMessage();
@@ -30,12 +30,12 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResultModel<Void> handleMessageNotReadableException() {
+    public ResultModel<Object> handleMessageNotReadableException() {
         return ResultModel.failure(400, "PARAMETER_ERROR", "请求内容格式错误");
     }
 
     @ExceptionHandler(Exception.class)
-    public ResultModel<Void> handleException(Exception exception) {
+    public ResultModel<Object> handleException(Exception exception) {
         return ResultModel.failure(500, "SYSTEM_ERROR", "系统异常");
     }
 }

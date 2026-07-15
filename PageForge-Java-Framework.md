@@ -339,8 +339,9 @@ public class ResultModel<T> {
         return result;
     }
 
-    public static ResultModel<Void> success() {
-        return success(null);
+    /** 无具体业务数据时返回 true，明确表示操作成功。 */
+    public static ResultModel<Boolean> success() {
+        return success(Boolean.TRUE);
     }
 
     public static <T> ResultModel<T> failure(
@@ -752,7 +753,7 @@ FileException
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
-    public ResultModel<Void> handleBusinessException(
+    public ResultModel<Object> handleBusinessException(
             BusinessException exception) {
         return ResultModel.failure(
                 400,
@@ -762,7 +763,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResultModel<Void> handleException(Exception exception) {
+    public ResultModel<Object> handleException(Exception exception) {
         return ResultModel.failure(
                 500,
                 "SYSTEM_ERROR",
