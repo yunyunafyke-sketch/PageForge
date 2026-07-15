@@ -6,10 +6,10 @@
         <groupId>com.afyke.pageforge</groupId><artifactId>page-forge</artifactId>
         <version>1.0.0-SNAPSHOT</version><relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>page-forge-security</artifactId>
+    <artifactId>security</artifactId>
     <dependencies>
-        <dependency><groupId>com.afyke.pageforge</groupId><artifactId>page-forge-common</artifactId><version>${project.version}</version></dependency>
-        <dependency><groupId>com.afyke.pageforge</groupId><artifactId>page-forge-system</artifactId><version>${project.version}</version></dependency>
+        <dependency><groupId>com.afyke.pageforge</groupId><artifactId>common</artifactId><version>${project.version}</version></dependency>
+        <dependency><groupId>com.afyke.pageforge</groupId><artifactId>system</artifactId><version>${project.version}</version></dependency>
         <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-security</artifactId></dependency>
         <dependency><groupId>io.jsonwebtoken</groupId><artifactId>jjwt-api</artifactId></dependency>
         <dependency><groupId>io.jsonwebtoken</groupId><artifactId>jjwt-impl</artifactId><scope>runtime</scope></dependency>

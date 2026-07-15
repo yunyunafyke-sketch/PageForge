@@ -91,16 +91,16 @@ Lombok
 
 ```text
 page-forge
-├── page-forge-boot
-├── page-forge-common
-├── page-forge-security
-├── page-forge-system
-└── page-forge-business
+├── boot
+├── common
+├── security
+├── system
+└── business
 ```
 
 项目初期保持少量模块即可。文件、日志和定时任务先作为功能包放在现有模块中，只有代码量明显增大时再拆成独立模块。
 
-### 5.1 page-forge-boot
+### 5.1 boot
 
 项目入口，只负责：
 
@@ -108,7 +108,7 @@ page-forge
 - 项目配置文件
 - 组装其他模块
 
-### 5.2 page-forge-common
+### 5.2 common
 
 存放各模块都会使用的简单公共代码：
 
@@ -118,7 +118,7 @@ page-forge
 - 工具类
 - 基础实体
 
-### 5.3 page-forge-security
+### 5.3 security
 
 负责登录和权限：
 
@@ -128,7 +128,7 @@ page-forge
 - 登录状态校验
 - 接口权限校验
 
-### 5.4 page-forge-system
+### 5.4 system
 
 负责后台最基础的管理功能：
 
@@ -138,14 +138,14 @@ page-forge
 - 菜单管理
 - 数据字典
 
-### 5.5 page-forge-business
+### 5.5 business
 
 存放项目自身的业务代码，例如外包人员、消息、码表和账号等功能。
 
 示例：
 
 ```text
-page-forge-business
+business
 └── src/main/java/com/afyke/pageforge/business
     ├── staff
     ├── message
@@ -306,7 +306,7 @@ POST /export
 
 ## 八、统一返回结果
 
-建议在 `page-forge-common` 模块的 `com.afyke.pageforge.common.model` 包中提供统一响应模型：
+建议在 `common` 模块的 `com.afyke.pageforge.common.model` 包中提供统一响应模型：
 
 ```java
 package com.afyke.pageforge.common.model;

@@ -44,7 +44,7 @@ export JWT_SECRET=please-change-this-secret-at-least-32-bytes
 export ALIYUN_OSS_ACCESS_KEY_ID=your-access-key-id
 export ALIYUN_OSS_ACCESS_KEY_SECRET=your-access-key-secret
 mvn clean package -DskipTests
-java -jar page-forge-boot/target/page-forge-boot-1.0.0-SNAPSHOT.jar
+java -jar boot/target/boot-1.0.0-SNAPSHOT.jar
 ```
 
 启动后访问 Knife4j：

@@ -18,11 +18,11 @@
     <name>PageForge</name>
 
     <modules>
-        <module>page-forge-common</module>
-        <module>page-forge-system</module>
-        <module>page-forge-security</module>
-        <module>page-forge-business</module>
-        <module>page-forge-boot</module>
+        <module>common</module>
+        <module>system</module>
+        <module>security</module>
+        <module>business</module>
+        <module>boot</module>
     </modules>
 
     <properties>
