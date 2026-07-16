@@ -1,6 +1,7 @@
 package com.afyke.pageforge.common.exception;
 
 import com.afyke.pageforge.common.model.ResultModel;
+import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.dao.DuplicateKeyException;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  */
 @RestControllerAdvice
 @Slf4j
+// Springdoc 2.3 不兼容 Spring 6.2 的 ControllerAdviceBean API，因此不扫描全局异常处理器。
+@Hidden
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
