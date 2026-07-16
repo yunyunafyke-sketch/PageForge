@@ -2,6 +2,8 @@
 
 PageForge 是一个基于 Spring Boot 3 的 Maven 多模块单体项目。
 
+仓库中的 `frontend` 目录提供配套的 Vue 3 + TypeScript 管理后台，已接入当前后端全部基础接口。
+
 ## 环境要求
 
 - JDK 17
@@ -50,8 +52,20 @@ java -jar boot/target/boot-1.0.0-SNAPSHOT.jar
 启动后访问 Knife4j：
 
 ```text
-http://localhost:8080/doc.html
+http://localhost:9090/doc.html
 ```
+
+## 启动前端
+
+后端启动后，在另一个终端执行：
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+访问 `http://localhost:5173`。开发环境会将 `/api` 请求代理到 `http://localhost:8080`；其他配置及目录说明见 `frontend/README.md`。
 
 ## 账号接口
 

@@ -1,6 +1,7 @@
 package com.afyke.pageforge.common.exception;
 
 import com.afyke.pageforge.common.model.ResultModel;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.validation.BindException;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * 全局异常处理器。
  */
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
@@ -46,6 +48,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResultModel<Void> handleException(Exception exception) {
+        // 未知异常必须记录完整堆栈，响应中仍使用统一提示，避免向前端泄露内部实现。
+        log.error("系统发生未处理异常", exception);
         return ResultModel.failure(500, "SYSTEM_ERROR", "系统异常");
     }
 }

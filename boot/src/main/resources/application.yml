@@ -4,8 +4,8 @@
 
 # Web 服务配置。
 server:
-  # 项目启动端口，默认使用 8080。
-  port: ${SERVER_PORT:8080}
+  # 项目启动端口，默认使用 9090。
+  port: ${SERVER_PORT:9090}
 
 spring:
   application:
@@ -19,11 +19,10 @@ spring:
     # 数据库连接地址，默认连接本机的 page_forge 数据库。
     # useUnicode 和 characterEncoding 用于保证中文正常读写。
     # serverTimezone 用于统一数据库连接时区。
-    url: ${DB_URL:jdbc:mysql://localhost:3306/page_forge?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai}
+    url: ${DB_URL:jdbc:mysql://47.99.178.186:3306/page_forge?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai}
     # 数据库账号和密码属于敏感信息，必须通过环境变量提供。
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-
+    username: ${DB_USERNAME:page_forge}
+    password: ${DB_PASSWORD:ETcr2jpxdW5Cin4b}
   data:
     # Redis 连接配置，目前可用于缓存、验证码或登录状态扩展。
     redis:
@@ -61,7 +60,7 @@ page-forge:
   # JWT 登录令牌配置。
   jwt:
     # JWT 签名密钥，属于敏感信息，必须通过环境变量提供且不少于 32 字节。
-    secret: ${JWT_SECRET}
+    secret: ${JWT_SECRET:23123213423452342143123124123123}
     # Token 有效期，单位为秒，默认 7200 秒，即 2 小时。
     expiration-seconds: ${JWT_EXPIRATION_SECONDS:7200}
 
