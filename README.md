@@ -6,7 +6,7 @@ PageForge 是一个基于 Spring Boot 3 的 Maven 多模块单体项目。
 
 ## 在线演示
 
-- 演示地址：[http://47.99.178.186:77](http://47.99.178.186:77)
+- 演示地址：[http://47.99.178.186:97](http://47.99.178.186:97)
 - 管理员账号：`admin`
 - 初始密码：`123456`
 
@@ -73,7 +73,7 @@ npm install
 npm run dev
 ```
 
-访问 `http://localhost:5173`。开发环境会将 `/api` 请求代理到 `http://localhost:8080`；其他配置及目录说明见 `frontend/README.md`。
+访问 `http://localhost:97`。开发环境会将 `/api` 请求代理到 `http://localhost:8080`；其他配置及目录说明见 `frontend/README.md`。
 
 ## 账号接口
 

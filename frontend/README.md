@@ -11,7 +11,7 @@ npm install
 npm run dev
 ```
 
-开发服务默认运行在 `http://localhost:5173`，并将 `/api` 请求代理到 `http://localhost:8080`。
+开发服务默认运行在 `http://localhost:97`，并将 `/api` 请求代理到 `http://localhost:8080`。
 如后端地址不同，可以复制 `.env.example` 为 `.env.local` 并修改：
 
 ```text

@@ -1,5 +1,6 @@
 package com.afyke.pageforge.security.filter;
 
+import com.afyke.pageforge.common.util.WebRequestUtils;
 import com.afyke.pageforge.security.model.LoginUser;
 import com.afyke.pageforge.security.service.JwtTokenService;
 import jakarta.servlet.FilterChain;
@@ -7,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +23,7 @@ import java.util.List;
 /** JWT 认证过滤器。 */
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     /** JWT Token 服务。 */
@@ -52,8 +55,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         new WebAuthenticationDetailsSource().buildDetails(request));
                 // 设置认证信息后，后面的接口即可判断当前用户是否已登录及其角色。
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-            } catch (Exception ignored) {
+            } catch (Exception exception) {
                 // Token 无效或已过期时不建立登录状态，后续由 Security 返回 401。
+                log.warn("JWT 认证失败 method={} uri={} clientIp={} reason={}",
+                        request.getMethod(),
+                        request.getRequestURI(),
+                        WebRequestUtils.resolveClientIp(request),
+                        exception.getClass().getSimpleName());
                 SecurityContextHolder.clearContext();
             }
         }

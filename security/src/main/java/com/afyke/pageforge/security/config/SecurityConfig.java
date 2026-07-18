@@ -1,10 +1,13 @@
 package com.afyke.pageforge.security.config;
 
 import com.afyke.pageforge.common.model.ResultModel;
+import com.afyke.pageforge.common.util.WebRequestUtils;
+import com.afyke.pageforge.security.filter.ApiRequestLoggingFilter;
 import com.afyke.pageforge.security.filter.JwtAuthenticationFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +26,7 @@ import java.nio.charset.StandardCharsets;
 @Configuration
 @RequiredArgsConstructor
 @EnableConfigurationProperties(JwtProperties.class)
+@Slf4j
 public class SecurityConfig {
 
     /** JWT 认证过滤器。 */
@@ -53,12 +57,26 @@ public class SecurityConfig {
                         .requestMatchers("/api/user/**").hasAnyAuthority("ADMIN", "USER")
                         .anyRequest().authenticated())
                 .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint((request, response, authException) ->
-                                writeError(response, 401, "UNAUTHORIZED", "请先登录"))
-                        .accessDeniedHandler((request, response, accessDeniedException) ->
-                                writeError(response, 403, "FORBIDDEN", "无权访问")))
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            log.warn("请求未认证 method={} uri={} clientIp={} reason={}",
+                                    request.getMethod(), request.getRequestURI(),
+                                    WebRequestUtils.resolveClientIp(request),
+                                    authException.getClass().getSimpleName());
+                            writeError(response, 401, "UNAUTHORIZED", "请先登录");
+                        })
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            log.warn("请求无权限 method={} uri={} user={} clientIp={}",
+                                    request.getMethod(), request.getRequestURI(),
+                                    request.getUserPrincipal() == null
+                                            ? "-" : WebRequestUtils.sanitizeLogValue(
+                                                    request.getUserPrincipal().getName()),
+                                    WebRequestUtils.resolveClientIp(request));
+                            writeError(response, 403, "FORBIDDEN", "无权访问");
+                        }))
                 // 在 Spring 默认账号密码认证过滤器之前解析 JWT。
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                // 先登记 JWT 过滤器顺序，再把请求日志放到它之前，以便认证日志共享链路标识。
+                .addFilterBefore(new ApiRequestLoggingFilter(), JwtAuthenticationFilter.class);
         return http.build();
     }
 
