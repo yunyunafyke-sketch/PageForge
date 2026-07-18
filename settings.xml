@@ -22,6 +22,9 @@ C:\Users\用户名\.m2\settings.xml
           xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.2.0
           https://maven.apache.org/xsd/settings-1.2.0.xsd">
 
+    <!-- Maven 本地仓库位置，依赖 jar 会下载并缓存到该目录。 -->
+    <localRepository>/Users/chenweili/Documents/local-repository</localRepository>
+
     <!--
     插件组
 
